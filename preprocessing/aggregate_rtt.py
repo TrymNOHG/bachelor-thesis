@@ -211,3 +211,8 @@ def filter_and_aggregate(
         df.drop(columns=drop_columns, inplace=True)
 
     return df
+
+df = pd.read_csv("./oslo_3_month_packetloss_rtt_rawdata_1sec_bins.csv")
+df = filter_and_aggregate(df, "data")
+
+df.to_csv("./oslo_3_month_aggregated.csv")

@@ -18,7 +18,7 @@ def get_hour_from_data_obj(data : str) -> int:
     return date_obj.hour
 
 
-def categorize_column(mapper : dict, val : int) -> str | None:
+def categorize_column(mapper : dict, val : int):
     mapper = dict(sorted(mapper.items(), key=lambda x:x[1], reverse=True))
     category = None
     for (category, boundary) in mapper.items():
@@ -54,7 +54,7 @@ def get_min_value(tstr):
     return min(nums)
 
 
-def find_avg_rtt_in_timespan(df, window):
+def find_avg_rtt_in_timespan(df, window, multiplier=1):
     """
     df: dataframe containing at least ts and rtt.
         It's important that the df only contains row for a single node.
@@ -63,31 +63,37 @@ def find_avg_rtt_in_timespan(df, window):
     
     """
     df = df.set_index('ts')
+    if multiplier != 1:
+        if 'min' in window:
+            new_window = int(window.replace('min', '')) * multiplier
+            window = f'{new_window}min'
+        if 's' in window:
+            new_window = int(window.replace('s', '')) * multiplier
+            window = f'{new_window}s'
+
     df[f'rtt_{window}_mean'] = df['rtt'].rolling(window).mean()
+    
     # Reset the index if necessary
     df = df.reset_index()
     return df
-
+    
 
 def shift_fault(df):
     df["is_fault"] = df["is_fault"].shift(-1)
     return df
 
+def remove_outliers_IQR(df, column):
+    Q1 = df[column].quantile(0.25)
+    Q3 = df[column].quantile(0.75)
+    IQR = Q3 - Q1
+    lower_bound = Q1 - 1.5 * IQR
+    upper_bound = Q3 + 1.5 * IQR
+            
+    df_filtered = df[(df[column] > lower_bound) & (df[column] < upper_bound)]
+    return df_filtered
 
-if __name__ == "__main__":
-    df = pd.read_csv("../data/5_nodes_1_week_fault.csv")
-    # Drop unwanted columns
-    df.drop(columns=['Unnamed: 0', 'network_id', 'service_id'])
 
-    # Only keep entries where both scnt and rcnt are 1.
-    df = df.loc[(df['scnt'] == 1) & (df['rcnt'] == 1)]
-
-    # Convert the rtt unit from seconds to milliseconds
-    df['rtt'] = df['rtt'].apply(lambda x: s_to_ms(x))
-
-    # Ensure 'ts' is a datetime type
-    df['ts'] = pd.to_datetime(df['ts'])
-
+def filter_radio_conn_data(df):
     # Filter away garbage RSSI, RSRQ and RSRP values.
     df['event_rssi'] = df['event_rssi'].apply(lambda val: "".join(char for char in val if char not in "\"(,)"))
     df['event_rsrq'] =df['event_rsrq'].apply(lambda val: "".join(char for char in val if char not in "\"(,)"))
@@ -99,42 +105,40 @@ if __name__ == "__main__":
     df['rssi'] = df['bin_rssi'].apply(lambda x: get_min_value(x))
     df['rsrq'] = df['bin_rsrq'].apply(lambda x: get_min_value(x))
     df['rsrp'] = df['bin_rsrp'].apply(lambda x: get_min_value(x))
+    return df
 
-    # Categorize population
-    population_category_mapper = {
-        'LOW'    : 15000,
-        'MEDIUM' : 30000,
-        'HIGH' : 45000
-    }
-    df['population'] = df['population'].apply(lambda x: categorize_column(population_category_mapper, x)) # Categorize population based on intervals defined in population mapper
 
-    # We can now remove some extra columns
-    df = df.drop(columns=["Unnamed: 0", "network_id", "service_id", "scnt", "rcnt", "bin_ts", "event_ts", "event_rssi", "bin_rssi", "event_rsrq", "bin_rsrq", "event_rsrp", "bin_rsrp"])
+def categorize_population(df, population_dict):
+    df['population'] = df['population'].apply(lambda x: categorize_column(population_dict, x))
+    return df
 
+
+def create_rtt_means(df, multiplier=1):
     df = df.groupby('node_id').apply(lambda group: shift_fault(group)).reset_index(drop=True)
-    # Calculate new rtt features.
-    df = df.groupby('node_id').apply(lambda group: find_avg_rtt_in_timespan(group, "2s")).reset_index(drop=True)
-    df = df.groupby('node_id').apply(lambda group: find_avg_rtt_in_timespan(group, "3s")).reset_index(drop=True)
-    df = df.groupby('node_id').apply(lambda group: find_avg_rtt_in_timespan(group, "4s")).reset_index(drop=True)
-    df = df.groupby('node_id').apply(lambda group: find_avg_rtt_in_timespan(group, "5s")).reset_index(drop=True)
-    df = df.groupby('node_id').apply(lambda group: find_avg_rtt_in_timespan(group, "10s")).reset_index(drop=True)
-    df = df.groupby('node_id').apply(lambda group: find_avg_rtt_in_timespan(group, "30s")).reset_index(drop=True)
-    df = df.groupby('node_id').apply(lambda group: find_avg_rtt_in_timespan(group, "1min")).reset_index(drop=True)
-    df = df.groupby('node_id').apply(lambda group: find_avg_rtt_in_timespan(group, "5min")).reset_index(drop=True)
-    df = df.groupby('node_id').apply(lambda group: find_avg_rtt_in_timespan(group, "10min")).reset_index(drop=True)
+    df = df.groupby('node_id').apply(lambda group: find_avg_rtt_in_timespan(group, "2s", multiplier)).reset_index(drop=True)
+    df = df.groupby('node_id').apply(lambda group: find_avg_rtt_in_timespan(group, "3s", multiplier)).reset_index(drop=True)
+    df = df.groupby('node_id').apply(lambda group: find_avg_rtt_in_timespan(group, "4s", multiplier)).reset_index(drop=True)
+    df = df.groupby('node_id').apply(lambda group: find_avg_rtt_in_timespan(group, "5s", multiplier)).reset_index(drop=True)
+    df = df.groupby('node_id').apply(lambda group: find_avg_rtt_in_timespan(group, "10s", multiplier)).reset_index(drop=True)
+    df = df.groupby('node_id').apply(lambda group: find_avg_rtt_in_timespan(group, "30s", multiplier)).reset_index(drop=True)
+    df = df.groupby('node_id').apply(lambda group: find_avg_rtt_in_timespan(group, "1min", multiplier)).reset_index(drop=True)
+    df = df.groupby('node_id').apply(lambda group: find_avg_rtt_in_timespan(group, "5min", multiplier)).reset_index(drop=True)
+    df = df.groupby('node_id').apply(lambda group: find_avg_rtt_in_timespan(group, "10min", multiplier)).reset_index(drop=True)
+    return df
 
-    # Add day-of-week feature
+
+def add_day_and_hour(df):
     df['weekday'] = df['ts'].dt.day_name()
+    df['hour'] = df['ts'].apply(lambda x: str(get_hour_from_data_obj(x)))
+    return df
 
-    # Only keep hours from timestamp, and make string for categorization later.
-    df['ts'] = df['ts'].apply(lambda x: str(get_hour_from_data_obj(x)))
-    # Entries made into strings in order to perform one-hot encoding.          
-    df = change_col_type_to_str(df, ['node_id', 'weekday'])
 
-    # Finally we can properly convert the categorical data
-    df.dropna(inplace=True)
+def drop_useless_columns(df):
+    df = df.drop(columns=["scnt", "rcnt", "event_rssi", "bin_rssi", "event_rsrq", "bin_rsrq", "event_rsrp", "bin_rsrp", "event_count_rssi", "event_count_rsrq", "event_count_rsrp"])
+    return df
 
-    df = pd.get_dummies(df, columns=['ts', 'population', 'node_id', 'weekday'])
 
-    # Save the processed dataset for later
-    df.to_csv("../data/5_nodes_1_week_fault_processed.csv")
+def one_hot_encode(df, str_cols, dummy_cols):
+    df = change_col_type_to_str(df, str_cols)
+    df = pd.get_dummies(df, columns=dummy_cols)
+    return df

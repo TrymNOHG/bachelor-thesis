@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import shap
 import numpy as np
 
-
 def order_features_and_col(feature_importance: list, columns: list, reversed: bool =True) -> list[dict, list]:
     """
     This method takes a list of feature importances and sorts it. It then changes the corresponding array of feature names to match the order of importances.
@@ -22,36 +21,38 @@ def order_features_and_col(feature_importance: list, columns: list, reversed: bo
 
     return feature_importance_dict, ordered_cols
 
-
-def bar_graph(indices, cols, dict, title, image_save_path, direction='vertical',  save_mode=False):
+def bar_graph(indices, cols, dict, title, image_save_path, direction='vertical', save_mode=False, thread_lock=None):
     """
     This method creates a bar graph with focus on feature importance. The option for path to save and direction of the bar graph is available.
     """
-    x_label = 'Feature'
-    y_label = 'Importance'
+    with thread_lock:
+        x_label = 'Feature'
+        y_label = 'Importance'
 
-    if direction == "horizontal":
-        plt.barh(indices, dict.keys())
-        plt.gca().invert_yaxis()
-        plt.yticks(indices, cols, rotation=direction)
-        x_label = 'Importance'
-        y_label = 'Feature'
-    elif direction == "vertical":
-        plt.bar(indices, dict.keys(), orientation='vertical')
-        plt.xticks(indices, cols, rotation=direction)
-    else:
-        raise AttributeError("Invalid direction")
-    
-    plt.title(title)
-    plt.xlabel(x_label)
-    plt.ylabel(y_label)
-    plt.style.use('tableau-colorblind10')
-    plt.tight_layout(pad=2.0, w_pad=1.0, h_pad=1.0)
+        if direction == "horizontal":
+            plt.barh(indices, dict.keys())
+            plt.gca().invert_yaxis()
+            plt.yticks(indices, cols, rotation=direction)
+            x_label = 'Importance'
+            y_label = 'Feature'
+        elif direction == "vertical":
+            plt.bar(indices, dict.keys(), orientation='vertical')
+            plt.xticks(indices, cols, rotation=direction)
+        else:
+            raise AttributeError("Invalid direction")
+        
+        plt.title(title)
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
+        plt.style.use('tableau-colorblind10')
+        plt.tight_layout(pad=2.0, w_pad=1.0, h_pad=1.0)
 
-    if image_save_path is not None:
-        plt.savefig(image_save_path)
-    if not save_mode:
-        plt.show()
+        if image_save_path is not None:
+            plt.savefig(image_save_path)
+        if not save_mode:
+            plt.show()
+
+        plt.close()
 
 
 def display_mdi_feat_importance(model: object, columns: list, title: str, image_save_path: str) -> None:
@@ -68,7 +69,7 @@ def display_mdi_feat_importance(model: object, columns: list, title: str, image_
     num_x = list(range(len(feature_importance)))
     feature_importance_dict, ordered_cols = order_features_and_col(feature_importance, columns, True)
     bar_graph(num_x, ordered_cols, feature_importance_dict, title, image_save_path, 'vertical')
-    
+
 
 def display_perm_importance(columns: list, feature_importance: list, title: str, image_save_path: str, save_mode=False) -> None:
     """
@@ -101,7 +102,7 @@ def get_SHAP_explainer(model: object) -> shap.Explainer:
     return shap.TreeExplainer(model) if type(model) == RandomForestClassifier else shap.Explainer(model)
         
 
-def calculate_SHAP(explainer: object, X_test: pd.DataFrame, num_features: int = None, title: str = None, image_save_path: str = None) -> None:
+def calculate_SHAP(explainer: object, X_test: pd.DataFrame, num_features: int = None, title: str = None, image_save_path: str = None, thread_lock=None) -> None:
     """
     This method calculates the SHAP values for a model using an Explainer object. The feature importances are then displayed in a bar graph.
     """
@@ -123,7 +124,7 @@ def calculate_SHAP(explainer: object, X_test: pd.DataFrame, num_features: int = 
         ordered_cols = ordered_cols[:num_features]
     num_x = list(range(len(importances)))
 
-    bar_graph(num_x, ordered_cols, feature_importance_dict, title, image_save_path, 'horizontal')
+    bar_graph(num_x, ordered_cols, feature_importance_dict, title, image_save_path, 'horizontal', save_mode=True, thread_lock=thread_lock)
 
 
 def display_dependence_plot(model: object, X_test: pd.DataFrame, feat_1: str, feat_2: str) -> None:
