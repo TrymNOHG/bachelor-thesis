@@ -1,0 +1,19 @@
+Metric,Value
+Model name,RandomForestClassifier
+Dataset name,rerun
+Accuracy,0.8798342141308968
+Precision,0.44838336546108365
+Recall,0.8701485925774483
+Specificity,0.880911709157244
+F1 Score,0.5918099322696884
+AUC,0.8755301508673462
+True Negative Rate,0.880911709157244
+False Positive Rate,0.11908829084275596
+False Negative Rate,0.12985140742255177
+True Positive Rate,0.8701485925774483
+Area under the Precision - Recall,0.4031595718576584
+Total Samples,100000
+Compute per Analysis,9.206427085679025e-05
+Disk,17733539740
+RAM,17340108800
+Train Time,10680.606493234634

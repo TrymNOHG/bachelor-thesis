@@ -1,0 +1,18 @@
+Metric,Value
+Model name,catboost_4144_interval_1_3_months_aggregated_proc
+Dataset name,interval_data
+Accuracy,0.8537367777190336
+Precision,0.394488555927792
+Recall,0.8660585879059891
+Specificity,0.8523683598401978
+F1 Score,0.5420665198650391
+AUC,0.8592134738730933
+True Negative Rate,0.8523683598401978
+False Positive Rate,0.14763164015980224
+False Negative Rate,0.13394141209401092
+True Positive Rate,0.8660585879059891
+Total Samples,100000
+Compute per Analysis,5.025110399583355e-07
+Disk,100410
+RAM,0
+Train Time,9.35906434059143

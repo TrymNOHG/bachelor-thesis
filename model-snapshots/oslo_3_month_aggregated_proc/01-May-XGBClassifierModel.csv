@@ -1,0 +1,17 @@
+Metric,Value
+Model name,XGBClassifierModel
+Dataset name,oslo_3_month_aggregated_proc
+Accuracy,0.8659455147548899
+Precision,0.4170950964053431
+Recall,0.8529381698657713
+Specificity,0.8673925410863097
+F1 Score,0.5602315114665939
+AUC,0.8601653554760403
+True Negative Rate,0.8673925410863097
+False Positive Rate,0.1326074589136903
+False Negative Rate,0.14706183013422872
+True Positive Rate,0.8529381698657713
+Total Samples,100000
+Compute per Analysis,3.174858810380101e-06
+Disk,176310
+RAM,200704

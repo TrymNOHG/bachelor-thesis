@@ -1,0 +1,19 @@
+Metric,Value
+Model name,LGBMClassifier
+Dataset name,rerun
+Accuracy,0.8660163109364094
+Precision,0.4172006992838344
+Recall,0.8524605976729496
+Specificity,0.8675243415299407
+F1 Score,0.5602236727440788
+AUC,0.8599924696014452
+True Negative Rate,0.8675243415299407
+False Positive Rate,0.13247565847005927
+False Negative Rate,0.14753940232705046
+True Positive Rate,0.8524605976729496
+Area under the Precision - Recall,0.3704173191534609
+Total Samples,100000
+Compute per Analysis,1.4410031586885453e-06
+Disk,196953
+RAM,49152
+Train Time,71.84546542167664

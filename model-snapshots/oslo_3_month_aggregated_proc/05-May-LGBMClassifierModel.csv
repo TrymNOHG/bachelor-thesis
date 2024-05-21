@@ -1,0 +1,17 @@
+Metric,Value
+Model name,LGBMClassifierModel
+Dataset name,os_oslo_3_month_aggregated_proc
+Accuracy,0.8732520060667447
+Precision,0.4337496116968651
+Recall,0.8710555079381306
+Specificity,0.8734963595959325
+F1 Score,0.5791209471039944
+AUC,0.8722759337670316
+True Negative Rate,0.8734963595959325
+False Positive Rate,0.12650364040406747
+False Negative Rate,0.12894449206186945
+True Positive Rate,0.8710555079381306
+Total Samples,100000
+Compute per Analysis,6.650846498087048e-07
+Disk,521033
+RAM,0

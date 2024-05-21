@@ -1,0 +1,16 @@
+Model name,ABClassifier
+Dataset name,oslo_3_month_aggregated_proc
+Accuracy,0.8593288794890499
+Precision,0.40409813425400065
+Recall,0.8536170458149526
+Specificity,0.859964303074537
+F1 Score,0.5485265043271924
+AUC,0.8567906744447448
+True Negative Rate,0.859964303074537
+False Positive Rate,0.14003569692546303
+False Negative Rate,0.14638295418504743
+True Positive Rate,0.8536170458149526
+Total Samples,100000
+Compute per Analysis,1.9081414211541416e-06
+Disk,12860
+RAM,28672

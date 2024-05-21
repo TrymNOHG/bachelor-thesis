@@ -1,0 +1,19 @@
+Metric,Value
+Model name,LogisticRegression
+Dataset name,rerun
+Accuracy,0.3401331954845786
+Precision,0.13043984730574132
+Recall,0.9867731899044069
+Specificity,0.2681965237924586
+F1 Score,0.23042077012984025
+AUC,0.6274848568484328
+True Negative Rate,0.2681965237924586
+False Positive Rate,0.7318034762075414
+False Negative Rate,0.013226810095593074
+True Positive Rate,0.9867731899044069
+Area under the Precision - Recall,0.1300386794692499
+Total Samples,100000
+Compute per Analysis,5.927573470398783e-07
+Disk,1948
+RAM,0
+Train Time,2993.8691861629486

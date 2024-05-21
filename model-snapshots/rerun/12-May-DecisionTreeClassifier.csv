@@ -1,0 +1,19 @@
+Metric,Value
+Model name,DecisionTreeClassifier
+Dataset name,rerun
+Accuracy,0.8133355025269356
+Precision,0.32617584993841797
+Recall,0.8111933276192423
+Specificity,0.8135738127681388
+F1 Score,0.46526963860362947
+AUC,0.8123835701936906
+True Negative Rate,0.8135738127681388
+False Positive Rate,0.18642618723186122
+False Negative Rate,0.18880667238075766
+True Positive Rate,0.8111933276192423
+Area under the Precision - Recall,0.28349309899550346
+Total Samples,100000
+Compute per Analysis,1.2204493768513202e-06
+Disk,387910547
+RAM,98304
+Train Time,201.6117513179779

@@ -1,0 +1,17 @@
+Metric,Value
+Model name,DTClassifier
+Dataset name,oslo_3_month_aggregated_proc
+Accuracy,0.8520610662986035
+Precision,0.3909120223996346
+Recall,0.8560243032347522
+Specificity,0.8516201686170897
+F1 Score,0.536723784080137
+AUC,0.8538222359259209
+True Negative Rate,0.8516201686170897
+False Positive Rate,0.14837983138291033
+False Negative Rate,0.14397569676524785
+True Positive Rate,0.8560243032347521
+Total Samples,100000
+Compute per Analysis,2.7636916842311623e-07
+Disk,2535659
+RAM,65536

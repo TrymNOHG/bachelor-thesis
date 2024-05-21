@@ -1,0 +1,15 @@
+Metric,Value
+Model name,Central for Node 4120
+Dataset name,oslo_3_month_aggregated_proc
+Accuracy,0.8152
+Precision,0.4385
+Recall,0.8676
+Specificity,0.8060
+F1 Score,0.5826
+AUC,0.8368
+True Negative Rate,0.8060
+False Positive Rate,0.1940
+False Negative Rate,0.1324
+True Positive Rate,0.8676
+AUPRC,0.4001
+G-Mean,0.8362

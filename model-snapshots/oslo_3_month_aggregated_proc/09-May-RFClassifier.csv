@@ -1,0 +1,17 @@
+Metric,Value
+Model name,RFClassifier
+Dataset name,oslo_3_month_aggregated_proc
+Accuracy,0.8792952919752082
+Precision,0.44714370723399854
+Recall,0.8701616982907528
+Specificity,0.8803113756321391
+F1 Score,0.5907321506993523
+AUC,0.875236536961446
+True Negative Rate,0.8803113756321391
+False Positive Rate,0.11968862436786087
+False Negative Rate,0.12983830170924712
+True Positive Rate,0.8701616982907528
+Total Samples,100000
+Compute per Analysis,8.629713513888419e-05
+Disk,17784322460
+RAM,17429528576

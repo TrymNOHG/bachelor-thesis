@@ -1,0 +1,19 @@
+Metric,Value
+Model name,AdaBoostClassifier
+Dataset name,rerun
+Accuracy,0.8672061486142526
+Precision,0.4185629102701572
+Recall,0.8390062723943876
+Specificity,0.8703432964165734
+F1 Score,0.5585011336938704
+AUC,0.8546747844054805
+True Negative Rate,0.8703432964165734
+False Positive Rate,0.12965670358342662
+False Negative Rate,0.1609937276056124
+True Positive Rate,0.8390062723943876
+Area under the Precision - Recall,0.3672939805862457
+Total Samples,100000
+Compute per Analysis,5.438211499713361e-06
+Disk,29063
+RAM,94208
+Train Time,3234.7599070072174

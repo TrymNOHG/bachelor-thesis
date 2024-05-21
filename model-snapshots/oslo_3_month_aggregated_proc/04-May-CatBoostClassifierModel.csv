@@ -1,0 +1,17 @@
+Metric,Value
+Model name,CatBoostClassifierModel
+Dataset name,os_oslo_3_month_aggregated_proc
+Accuracy,0.872066839152545
+Precision,0.4310795474488423
+Recall,0.8691792940214357
+Specificity,0.8723880694938251
+F1 Score,0.5763243513806624
+AUC,0.8707836817576303
+True Negative Rate,0.8723880694938251
+False Positive Rate,0.12761193050617492
+False Negative Rate,0.1308207059785643
+True Positive Rate,0.8691792940214357
+Total Samples,100000
+Compute per Analysis,5.839402601122856e-07
+Disk,101110
+RAM,86016

@@ -1,0 +1,19 @@
+Metric,Value
+Model name,CatBoostClassifier
+Dataset name,rerun
+Accuracy,0.8816932305415461
+Precision,0.45316129987439796
+Recall,0.8792984773782283
+Specificity,0.881959639321671
+F1 Score,0.5980879089767083
+AUC,0.8806290583499498
+True Negative Rate,0.881959639321671
+False Positive Rate,0.11804036067832901
+False Negative Rate,0.12070152262177174
+True Positive Rate,0.8792984773782283
+Area under the Precision - Recall,0.4105474639738012
+Total Samples,100000
+Compute per Analysis,7.782886503264308e-07
+Disk,3234042
+RAM,12288
+Train Time,460.0591974258423

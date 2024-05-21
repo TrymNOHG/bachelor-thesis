@@ -1,0 +1,24 @@
+#!/bin/sh
+
+#SBATCH -N 1        # Allocate 1 nodes for the job
+#SBATCH -c 20       # Idun 20 cores
+#SBATCH -t 00:01:00 # Upper time limit for the job (DD-HH:MM:SS)
+#SBATCH --partition=GPUQ
+#SBATCH --gres=gpu:a100:1  # This reserves 3 a100 gpu
+#SBATCH --mem=32G              # 32 gigabytes memory
+#SBATCH --job-name="Job name"
+#SBATCH --output=model-output.txt
+WORKDIR=${SLURM_SUBMIT_DIR}
+cd ${WORKDIR}
+
+#module load intel/2023b
+module load Anaconda3/2022.10
+
+if [ $# -eq 0 ]; then
+	echo "No file arguments"
+	exit 1
+fi
+
+file_path=$1
+
+python $file_path
